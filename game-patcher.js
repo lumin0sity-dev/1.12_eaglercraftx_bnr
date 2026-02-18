@@ -136,23 +136,9 @@
         });
     }
     
-    // Patch console to intercept game logs
-    function interceptGameLogs() {
-        const originalLog = console.log;
-        const originalWarn = console.warn;
-        const originalError = console.error;
-        
-        console.log = function(...args) {
-            // Look for item-related logs
-            const message = args.join(' ');
-            if (message.includes('item') || message.includes('texture')) {
-                console.log(LOG_PREFIX, 'Game log (item-related):', ...args);
-            }
-            return originalLog.apply(console, args);
-        };
-        
-        // Could also patch warn and error similarly
-    }
+    // Patch console to intercept game logs (removed - too expensive)
+    // This function would add overhead to every log statement
+    // Commented out for performance reasons
     
     // Monitor for script loading
     function monitorScriptLoading() {

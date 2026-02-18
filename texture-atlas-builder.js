@@ -109,14 +109,20 @@
             gl.bindTexture(gl.TEXTURE_2D, atlasTexture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, atlas);
             
-            // Set texture parameters for pixel art
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
-            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+            // Set basic texture parameters first
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
             
-            // Generate mipmaps
-            gl.generateMipmap(gl.TEXTURE_2D);
+            // Try to generate mipmaps
+            try {
+                gl.generateMipmap(gl.TEXTURE_2D);
+                // Only use mipmap filter if generation succeeded
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST_MIPMAP_LINEAR);
+            } catch (error) {
+                console.warn(LOG_PREFIX, 'Failed to generate mipmaps for atlas, using simple filter');
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+            }
             
             console.log(LOG_PREFIX, 'WebGL atlas texture created');
             return atlasTexture;

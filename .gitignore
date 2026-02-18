@@ -1,0 +1,22 @@
+# Texture files (if extracted from zip)
+textures/
+
+# Node modules (if added for testing)
+node_modules/
+
+# Build artifacts
+*.tmp
+*.log
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary test files
+/tmp/

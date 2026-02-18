@@ -94,8 +94,9 @@
                     const replacement = getReplacementTexture(texture);
                     const textureToUse = replacement || texture;
                     
-                    if (replacement) {
-                        console.log(LOG_PREFIX, 'Replacing texture:', texture, 'with:', replacement);
+                    // Only log replacements (not every bind call to avoid performance issues)
+                    if (replacement && stats.texturesReplaced <= 10) {
+                        console.log(LOG_PREFIX, 'Replacing texture (logging first 10 only)');
                     }
                     
                     // Call original with potentially replaced texture
@@ -187,12 +188,15 @@
             // Install interceptor immediately
             interceptWebGLContext();
             
-            // Log stats periodically (every 30 seconds)
-            setInterval(function() {
+            // Log statistics periodically (every 30 seconds)
+            const statsInterval = setInterval(function() {
                 if (stats.bindTextureCalls > 0) {
                     window.WebGLTextureInjector.logStats();
                 }
             }, 30000);
+            
+            // Store interval for cleanup
+            window.WebGLTextureInjector._statsInterval = statsInterval;
             
             console.log(LOG_PREFIX, 'Initialization complete');
         }

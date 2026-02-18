@@ -22,8 +22,10 @@
             
             console.log(LOG_PREFIX, 'WebSocket connection detected:', args[0]);
             
-            // Intercept incoming messages
+            // Preserve original onmessage handler
             const originalOnMessage = ws.onmessage;
+            
+            // Intercept incoming messages
             ws.addEventListener('message', function(event) {
                 try {
                     // Try to detect item-related data
@@ -32,6 +34,13 @@
                     // Silently fail - we don't want to break the game
                 }
             });
+            
+            // Call original handler if it exists
+            if (originalOnMessage) {
+                ws.onmessage = function(event) {
+                    originalOnMessage.call(ws, event);
+                };
+            }
             
             return ws;
         };
