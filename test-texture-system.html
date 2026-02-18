@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Texture Injection System Test</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #2d2d2d;
+            border-radius: 5px;
+        }
+        .status {
+            padding: 5px 10px;
+            margin: 5px 0;
+            border-left: 3px solid #4ec9b0;
+        }
+        .error {
+            border-left-color: #f48771;
+        }
+        .success {
+            border-left-color: #89d185;
+        }
+        button {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 3px;
+        }
+        button:hover {
+            background: #1177bb;
+        }
+        canvas {
+            border: 1px solid #4ec9b0;
+            margin: 10px 0;
+        }
+        #console {
+            background: #1e1e1e;
+            border: 1px solid #4ec9b0;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .log-entry {
+            padding: 2px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>WebGL Texture Injection System - Test Page</h1>
+    
+    <div class="section">
+        <h2>System Status</h2>
+        <div id="status"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Test Controls</h2>
+        <button onclick="testWebGLInterceptor()">Test WebGL Interceptor</button>
+        <button onclick="testTextureLoader()">Test Texture Loader</button>
+        <button onclick="testItemDetector()">Test Item Detector</button>
+        <button onclick="showStats()">Show All Stats</button>
+    </div>
+    
+    <div class="section">
+        <h2>WebGL Test Canvas</h2>
+        <canvas id="testCanvas" width="400" height="400"></canvas>
+    </div>
+    
+    <div class="section">
+        <h2>Console Output</h2>
+        <div id="console"></div>
+    </div>
+    
+    <!-- Load the experimental system -->
+    <script src="texture-loader.js"></script>
+    <script src="texture-atlas-builder.js"></script>
+    <script src="webgl-interceptor.js"></script>
+    <script src="item-detector.js"></script>
+    <script src="game-patcher.js"></script>
+    
+    <script>
+        // Capture console output
+        const consoleDiv = document.getElementById('console');
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addToConsole(type, ...args) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.style.color = type === 'error' ? '#f48771' : type === 'warn' ? '#dcdcaa' : '#4ec9b0';
+            entry.textContent = args.join(' ');
+            consoleDiv.appendChild(entry);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            addToConsole('log', ...args);
+            originalLog.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            addToConsole('error', ...args);
+            originalError.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+            addToConsole('warn', ...args);
+            originalWarn.apply(console, args);
+        };
+        
+        // Update status display
+        function updateStatus() {
+            const statusDiv = document.getElementById('status');
+            let html = '';
+            
+            // Check WebGL Interceptor
+            if (window.WebGLTextureInjector) {
+                const enabled = window.WebGLTextureInjector.isEnabled();
+                html += `<div class="status ${enabled ? 'success' : 'error'}">
+                    WebGL Interceptor: ${enabled ? 'ENABLED' : 'DISABLED'}
+                </div>`;
+            } else {
+                html += '<div class="status error">WebGL Interceptor: NOT LOADED</div>';
+            }
+            
+            // Check Texture Loader
+            if (window.TextureLoader) {
+                html += '<div class="status success">Texture Loader: LOADED</div>';
+            } else {
+                html += '<div class="status error">Texture Loader: NOT LOADED</div>';
+            }
+            
+            // Check Atlas Builder
+            if (window.TextureAtlasBuilder) {
+                html += '<div class="status success">Atlas Builder: LOADED</div>';
+            } else {
+                html += '<div class="status error">Atlas Builder: NOT LOADED</div>';
+            }
+            
+            // Check Item Detector
+            if (window.ItemDetector) {
+                html += '<div class="status success">Item Detector: LOADED</div>';
+            } else {
+                html += '<div class="status error">Item Detector: NOT LOADED</div>';
+            }
+            
+            // Check Game Patcher
+            if (window.GamePatcher) {
+                html += '<div class="status success">Game Patcher: LOADED</div>';
+            } else {
+                html += '<div class="status error">Game Patcher: NOT LOADED</div>';
+            }
+            
+            statusDiv.innerHTML = html;
+        }
+        
+        // Test WebGL Interceptor
+        function testWebGLInterceptor() {
+            console.log('Testing WebGL Interceptor...');
+            const canvas = document.getElementById('testCanvas');
+            const gl = canvas.getContext('webgl');
+            
+            if (!gl) {
+                console.error('WebGL not supported!');
+                return;
+            }
+            
+            console.log('WebGL context created successfully');
+            
+            // Try to create a simple texture
+            const texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            console.log('Texture created and bound successfully');
+            
+            // Draw something simple
+            gl.clearColor(0.2, 0.3, 0.4, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            console.log('Canvas cleared with color');
+            
+            if (window.WebGLTextureInjector) {
+                window.WebGLTextureInjector.logStats();
+            }
+        }
+        
+        // Test Texture Loader
+        function testTextureLoader() {
+            console.log('Testing Texture Loader...');
+            
+            if (!window.TextureLoader) {
+                console.error('Texture Loader not available');
+                return;
+            }
+            
+            window.TextureLoader.initialize().then(function() {
+                console.log('Texture Loader initialized');
+                const stats = window.TextureLoader.getStats();
+                console.log('Loader stats:', JSON.stringify(stats));
+            }).catch(function(error) {
+                console.error('Texture Loader initialization failed:', error);
+            });
+        }
+        
+        // Test Item Detector
+        function testItemDetector() {
+            console.log('Testing Item Detector...');
+            
+            if (!window.ItemDetector) {
+                console.error('Item Detector not available');
+                return;
+            }
+            
+            window.ItemDetector.start();
+            console.log('Item Detector started');
+            
+            const stats = window.ItemDetector.getStats();
+            console.log('Detector stats:', JSON.stringify(stats));
+        }
+        
+        // Show all stats
+        function showStats() {
+            console.log('=== SYSTEM STATISTICS ===');
+            
+            if (window.WebGLTextureInjector) {
+                console.log('WebGL Interceptor:', JSON.stringify(window.WebGLTextureInjector.getStats()));
+            }
+            
+            if (window.TextureLoader) {
+                console.log('Texture Loader:', JSON.stringify(window.TextureLoader.getStats()));
+            }
+            
+            if (window.TextureAtlasBuilder) {
+                console.log('Atlas Builder:', JSON.stringify(window.TextureAtlasBuilder.getStats()));
+            }
+            
+            if (window.ItemDetector) {
+                console.log('Item Detector:', JSON.stringify(window.ItemDetector.getStats()));
+            }
+            
+            if (window.GamePatcher) {
+                console.log('Game Patcher:', JSON.stringify(window.GamePatcher.getStats()));
+            }
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', function() {
+            updateStatus();
+            console.log('Test page loaded - All systems initialized');
+            console.log('Use the buttons above to test each component');
+        });
+    </script>
+</body>
+</html>
