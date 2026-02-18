@@ -1,0 +1,15 @@
+# Texture pack archives
+*.zip
+
+# Build artifacts
+*.map
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
