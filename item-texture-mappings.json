@@ -1,0 +1,175 @@
+{
+  "_comment": "Item texture mappings for modern Minecraft items (1.13-1.21.1)",
+  "_structure": {
+    "item_id": {
+      "texture": "path/to/texture.png",
+      "name": "Display Name",
+      "version": "Minecraft version introduced"
+    }
+  },
+  "minecraft:trident": {
+    "texture": "textures/items/trident.png",
+    "name": "Trident",
+    "version": "1.13"
+  },
+  "minecraft:phantom_membrane": {
+    "texture": "textures/items/phantom_membrane.png",
+    "name": "Phantom Membrane",
+    "version": "1.13"
+  },
+  "minecraft:nautilus_shell": {
+    "texture": "textures/items/nautilus_shell.png",
+    "name": "Nautilus Shell",
+    "version": "1.13"
+  },
+  "minecraft:heart_of_the_sea": {
+    "texture": "textures/items/heart_of_the_sea.png",
+    "name": "Heart of the Sea",
+    "version": "1.13"
+  },
+  "minecraft:scute": {
+    "texture": "textures/items/scute.png",
+    "name": "Scute",
+    "version": "1.13"
+  },
+  "minecraft:crossbow": {
+    "texture": "textures/items/crossbow.png",
+    "name": "Crossbow",
+    "version": "1.14"
+  },
+  "minecraft:suspicious_stew": {
+    "texture": "textures/items/suspicious_stew.png",
+    "name": "Suspicious Stew",
+    "version": "1.14"
+  },
+  "minecraft:sweet_berries": {
+    "texture": "textures/items/sweet_berries.png",
+    "name": "Sweet Berries",
+    "version": "1.14"
+  },
+  "minecraft:honeycomb": {
+    "texture": "textures/items/honeycomb.png",
+    "name": "Honeycomb",
+    "version": "1.15"
+  },
+  "minecraft:honey_bottle": {
+    "texture": "textures/items/honey_bottle.png",
+    "name": "Honey Bottle",
+    "version": "1.15"
+  },
+  "minecraft:netherite_ingot": {
+    "texture": "textures/items/netherite_ingot.png",
+    "name": "Netherite Ingot",
+    "version": "1.16"
+  },
+  "minecraft:netherite_scrap": {
+    "texture": "textures/items/netherite_scrap.png",
+    "name": "Netherite Scrap",
+    "version": "1.16"
+  },
+  "minecraft:netherite_sword": {
+    "texture": "textures/items/netherite_sword.png",
+    "name": "Netherite Sword",
+    "version": "1.16"
+  },
+  "minecraft:netherite_pickaxe": {
+    "texture": "textures/items/netherite_pickaxe.png",
+    "name": "Netherite Pickaxe",
+    "version": "1.16"
+  },
+  "minecraft:netherite_axe": {
+    "texture": "textures/items/netherite_axe.png",
+    "name": "Netherite Axe",
+    "version": "1.16"
+  },
+  "minecraft:netherite_shovel": {
+    "texture": "textures/items/netherite_shovel.png",
+    "name": "Netherite Shovel",
+    "version": "1.16"
+  },
+  "minecraft:netherite_hoe": {
+    "texture": "textures/items/netherite_hoe.png",
+    "name": "Netherite Hoe",
+    "version": "1.16"
+  },
+  "minecraft:netherite_helmet": {
+    "texture": "textures/items/netherite_helmet.png",
+    "name": "Netherite Helmet",
+    "version": "1.16"
+  },
+  "minecraft:netherite_chestplate": {
+    "texture": "textures/items/netherite_chestplate.png",
+    "name": "Netherite Chestplate",
+    "version": "1.16"
+  },
+  "minecraft:netherite_leggings": {
+    "texture": "textures/items/netherite_leggings.png",
+    "name": "Netherite Leggings",
+    "version": "1.16"
+  },
+  "minecraft:netherite_boots": {
+    "texture": "textures/items/netherite_boots.png",
+    "name": "Netherite Boots",
+    "version": "1.16"
+  },
+  "minecraft:warped_fungus_on_a_stick": {
+    "texture": "textures/items/warped_fungus_on_a_stick.png",
+    "name": "Warped Fungus on a Stick",
+    "version": "1.16"
+  },
+  "minecraft:amethyst_shard": {
+    "texture": "textures/items/amethyst_shard.png",
+    "name": "Amethyst Shard",
+    "version": "1.17"
+  },
+  "minecraft:spyglass": {
+    "texture": "textures/items/spyglass.png",
+    "name": "Spyglass",
+    "version": "1.17"
+  },
+  "minecraft:glow_ink_sac": {
+    "texture": "textures/items/glow_ink_sac.png",
+    "name": "Glow Ink Sac",
+    "version": "1.17"
+  },
+  "minecraft:copper_ingot": {
+    "texture": "textures/items/copper_ingot.png",
+    "name": "Copper Ingot",
+    "version": "1.17"
+  },
+  "minecraft:raw_copper": {
+    "texture": "textures/items/raw_copper.png",
+    "name": "Raw Copper",
+    "version": "1.17"
+  },
+  "minecraft:raw_iron": {
+    "texture": "textures/items/raw_iron.png",
+    "name": "Raw Iron",
+    "version": "1.17"
+  },
+  "minecraft:raw_gold": {
+    "texture": "textures/items/raw_gold.png",
+    "name": "Raw Gold",
+    "version": "1.17"
+  },
+  "minecraft:echo_shard": {
+    "texture": "textures/items/echo_shard.png",
+    "name": "Echo Shard",
+    "version": "1.19"
+  },
+  "minecraft:recovery_compass": {
+    "texture": "textures/items/recovery_compass.png",
+    "name": "Recovery Compass",
+    "version": "1.19"
+  },
+  "minecraft:disc_fragment_5": {
+    "texture": "textures/items/disc_fragment_5.png",
+    "name": "Disc Fragment",
+    "version": "1.19"
+  },
+  "minecraft:goat_horn": {
+    "texture": "textures/items/goat_horn.png",
+    "name": "Goat Horn",
+    "version": "1.19"
+  }
+}

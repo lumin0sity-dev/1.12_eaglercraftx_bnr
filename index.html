@@ -12,6 +12,13 @@
 		<meta property="og:description" content="Play minecraft 1.12 in your browser" />
 		<meta property="og:image" content="favicon.png" />
 		<link type="image/png" rel="shortcut icon" href="favicon.png" />
+		<!-- Experimental texture injection system - Load BEFORE bootstrap.js -->
+		<script type="text/javascript" src="texture-loader.js"></script>
+		<script type="text/javascript" src="texture-atlas-builder.js"></script>
+		<script type="text/javascript" src="webgl-interceptor.js"></script>
+		<script type="text/javascript" src="item-detector.js"></script>
+		<script type="text/javascript" src="game-patcher.js"></script>
+		<!-- End experimental system -->
 		<script type="text/javascript" src="bootstrap.js"></script>
 		<script type="text/javascript">
 			"use strict";
@@ -48,6 +55,51 @@
 					}
 					
 					main();
+					
+					// Initialize experimental texture injection system
+					if (window.WebGLTextureInjector && window.WebGLTextureInjector.isEnabled()) {
+						console.log('[ExperimentalInit] Starting texture injection system...');
+						
+						// Initialize game patcher first
+						if (window.GamePatcher) {
+							window.GamePatcher.initialize();
+						}
+						
+						// Initialize item detector
+						if (window.ItemDetector) {
+							window.ItemDetector.start();
+						}
+						
+						// Initialize texture loader
+						if (window.TextureLoader) {
+							window.TextureLoader.initialize().then(function() {
+								console.log('[ExperimentalInit] Textures loaded');
+								
+								// Wait for WebGL context to be available
+								var checkWebGL = setInterval(function() {
+									if (window.WebGLTextureInjector.getContext()) {
+										clearInterval(checkWebGL);
+										
+										// Convert textures to WebGL format
+										window.TextureLoader.convertToWebGL();
+										
+										// Build texture atlas
+										if (window.TextureAtlasBuilder) {
+											window.TextureAtlasBuilder.build();
+											window.TextureAtlasBuilder.createWebGLTexture();
+											console.log('[ExperimentalInit] Texture atlas built');
+										}
+										
+										console.log('[ExperimentalInit] Initialization complete');
+									}
+								}, 1000);
+							}).catch(function(error) {
+								console.error('[ExperimentalInit] Failed to initialize:', error);
+							});
+						}
+					} else {
+						console.log('[ExperimentalInit] Experimental features disabled');
+					}
 					
 				}
 			});
