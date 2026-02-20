@@ -1,0 +1,32 @@
+# Language / Translation File
+
+# How translations work:
+# The format is: item.<unlocalizedName>.name=Display Name
+# The <unlocalizedName> must match what you set in setUnlocalizedName() in your Java class.
+
+# ============================================================
+# Custom Items - 1.13+ Item Backport
+# ============================================================
+
+# Blue Candle (added in Minecraft 1.17)
+item.blue_candle.name=Blue Candle
+
+# Trident (added in Minecraft 1.13)
+item.trident.name=Trident
+
+# Copper Ingot (added in Minecraft 1.17)
+item.copper_ingot.name=Copper Ingot
+
+# Netherite Sword (added in Minecraft 1.16)
+item.netherite_sword.name=Netherite Sword
+
+# Amethyst Shard (added in Minecraft 1.17)
+item.amethyst_shard.name=Amethyst Shard
+
+# ============================================================
+# HOW TO ADD YOUR OWN TRANSLATIONS
+# ============================================================
+# 1. Add a line below in the format: item.your_item_name.name=Your Item Display Name
+# 2. The "your_item_name" must match the string you passed to setUnlocalizedName()
+# 3. For other languages, copy this file and rename it (e.g., fr_fr.lang for French)
+#    Then translate the values (right side of the = sign)
