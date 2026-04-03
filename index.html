@@ -15,6 +15,48 @@
 		<script type="text/javascript" src="bootstrap.js"></script>
 		<script type="text/javascript">
 			"use strict";
+			// IndexedDB mitigation for sporadic:
+// InvalidStateError: Failed to execute 'transaction' on 'IDBDatabase': The database connection is closing.
+(function installIndexedDBMitigation() {
+	try {
+		if (typeof window.IDBDatabase === "undefined" || !window.IDBDatabase || !window.IDBDatabase.prototype) return;
+
+		let shuttingDown = false;
+
+		window.addEventListener("pagehide", () => { shuttingDown = true; }, { capture: true });
+		document.addEventListener("visibilitychange", () => {
+			if (document.visibilityState === "hidden") shuttingDown = true;
+		}, { capture: true });
+
+		const origTxn = window.IDBDatabase.prototype.transaction;
+		if (typeof origTxn !== "function" || origTxn.__eaglerMitigated) return;
+
+		function shouldRetry(e) {
+			const name = (e && e.name) ? String(e.name) : "";
+			const msg = (e && e.message) ? String(e.message) : "";
+			return name === "InvalidStateError" && /connection is closing/i.test(msg);
+		}
+
+		function wrappedTransaction(storeNames, mode, options) {
+			if (shuttingDown) {
+				throw new DOMException("Aborted due to shutdown", "AbortError");
+			}
+			try {
+				return origTxn.call(this, storeNames, mode, options);
+			} catch (e) {
+				if (shouldRetry(e)) {
+					return origTxn.call(this, storeNames, mode, options); // retry once
+				}
+				throw e;
+			}
+		}
+
+		wrappedTransaction.__eaglerMitigated = true;
+		window.IDBDatabase.prototype.transaction = wrappedTransaction;
+	} catch (e) {
+		console.warn("IndexedDB mitigation failed to install:", e);
+	}
+})();
 			window.addEventListener("load", function() {
 				if(window.location.href.indexOf("file:") === 0) {
 					alert("HTTP please, do not open this file locally, run a local HTTP server and load it via HTTP");
